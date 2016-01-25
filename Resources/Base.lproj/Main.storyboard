@@ -122,11 +122,48 @@
                         <outlet property="driverToggle" destination="Ilp-nv-XWd" id="00H-zN-2bP"/>
                         <outlet property="password" destination="Kil-Ts-FPD" id="sei-C8-zpr"/>
                         <outlet property="username" destination="y7h-o9-Mzg" id="S0R-XM-zoY"/>
+                        <segue destination="fRz-1d-4YF" kind="show" identifier="loginRider" id="Ehc-fL-eCa"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="565" y="405"/>
+            <point key="canvasLocation" x="133" y="305"/>
+        </scene>
+        <!--Rider View Controller-->
+        <scene sceneID="S0R-jx-Xrg">
+            <objects>
+                <viewController id="fRz-1d-4YF" customClass="RiderViewController" customModule="Schnell" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="7mS-4n-6WZ"/>
+                        <viewControllerLayoutGuide type="bottom" id="bzX-IO-DEo"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="XHu-pn-OWB">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="IjB-al-owz">
+                                <rect key="frame" x="0.0" y="20" width="320" height="366"/>
+                            </mapView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pSG-fI-5Mz">
+                                <rect key="frame" x="60" y="394" width="201" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <state key="normal" title="Call a Schnellwagen"/>
+                                <connections>
+                                    <action selector="callPressed:" destination="fRz-1d-4YF" eventType="touchUpInside" id="Mea-EA-iMW"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                    <connections>
+                        <outlet property="callButton" destination="pSG-fI-5Mz" id="EBF-7K-gJ3"/>
+                        <outlet property="map" destination="IjB-al-owz" id="l4q-rO-bli"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cgY-V1-mNj" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="529" y="305"/>
         </scene>
     </scenes>
 </document>

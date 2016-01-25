@@ -25,6 +25,15 @@ class ViewController: UIViewController, UITextFieldDelegate {
         self.password.delegate = self
     }
 
+    override func viewDidAppear(animated: Bool) {
+        if PFUser.currentUser()?.objectId != nil {
+            performRelevantSegue()
+        }
+//        else {
+//            print("no-one logged in")
+//        }
+    }
+
     @IBAction func signupPressed(sender: AnyObject) {
         let user = PFUser()
 
@@ -42,7 +51,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
                 UIApplication.sharedApplication().endIgnoringInteractionEvents()
 
                 if success {
-                    // Nothing for now
+                    self.performRelevantSegue()
                 }
                 else {
                     var errorMsg = "please try again later"
@@ -68,7 +77,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
                 UIApplication.sharedApplication().endIgnoringInteractionEvents()
 
                 if error == nil {
-                    // Nothing for now
+                    self.performRelevantSegue()
                 }
                 else {
                     var errorMsg = "please try again later"
@@ -81,6 +90,28 @@ class ViewController: UIViewController, UITextFieldDelegate {
                 }
             })
         }
+    }
+
+    func performRelevantSegue() {
+        if let isDriver = PFUser.currentUser()!["isDriver"] as? Bool {
+            if isDriver {
+                // Nothing for now
+                print("Driver logged in")
+            }
+            else {
+//                print("Rider logged in")
+                performSegueWithIdentifier("loginRider", sender: self)
+            }
+        }
+        else {
+            print("Cockup on the isDriver front")
+        }
+    }
+
+    override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool {
+//        print("OK for segue: \(PFUser.currentUser()?.objectId)")
+
+        return PFUser.currentUser()?.objectId != nil
     }
 
     func checkEntries() -> Bool {

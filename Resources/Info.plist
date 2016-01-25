@@ -43,5 +43,9 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>to enable Schnell to find you quickly</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>to enable Schnell to keep you in mind</string>
 </dict>
 </plist>
