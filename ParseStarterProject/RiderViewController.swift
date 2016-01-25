@@ -16,7 +16,7 @@ class RiderViewController: UIViewController, MKMapViewDelegate, CLLocationManage
     @IBOutlet weak var callButton: UIButton!
 
     var locationManager = CLLocationManager()
-    var location : CLLocationCoordinate2D = CLLocationCoordinate2D()
+    var location = CLLocationCoordinate2D()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,6 +37,15 @@ class RiderViewController: UIViewController, MKMapViewDelegate, CLLocationManage
         let region = MKCoordinateRegionMake(location, span)
 
         self.map.setRegion(region, animated: true)
+    }
+
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "logoutRider" {
+            PFUser.logOut()
+        }
+        else {
+            print("Asked for odd segue")
+        }
     }
     
     @IBAction func callPressed(sender: AnyObject) {

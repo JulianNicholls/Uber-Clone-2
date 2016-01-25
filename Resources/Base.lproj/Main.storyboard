@@ -141,11 +141,33 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="IjB-al-owz">
-                                <rect key="frame" x="0.0" y="20" width="320" height="366"/>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="IjB-al-owz">
+                                <rect key="frame" x="0.0" y="64" width="320" height="366"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="366" id="bbA-T5-6YX"/>
+                                </constraints>
                             </mapView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pSG-fI-5Mz">
-                                <rect key="frame" x="60" y="394" width="201" height="30"/>
+                            <navigationBar contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="piS-f1-tUb">
+                                <rect key="frame" x="0.0" y="20" width="320" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="UIw-EB-IPh"/>
+                                </constraints>
+                                <items>
+                                    <navigationItem title="Schnell Rider" id="4f4-wu-g19">
+                                        <barButtonItem key="leftBarButtonItem" title="Log out" id="nKW-ze-qLN">
+                                            <connections>
+                                                <segue destination="BYZ-38-t0r" kind="show" identifier="logoutRider" id="ycx-Q4-p83"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pSG-fI-5Mz">
+                                <rect key="frame" x="60" y="438" width="201" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="Iup-Qd-ifU"/>
+                                    <constraint firstAttribute="width" constant="201" id="NBV-yf-byj"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <state key="normal" title="Call a Schnellwagen"/>
                                 <connections>
@@ -154,6 +176,16 @@
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="piS-f1-tUb" secondAttribute="trailing" constant="-20" id="9HO-9G-X5g"/>
+                            <constraint firstItem="pSG-fI-5Mz" firstAttribute="centerX" secondItem="XHu-pn-OWB" secondAttribute="centerX" id="DUe-Hv-F9f"/>
+                            <constraint firstItem="pSG-fI-5Mz" firstAttribute="top" secondItem="IjB-al-owz" secondAttribute="bottom" constant="8" id="K6l-cI-B9P"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="IjB-al-owz" secondAttribute="trailing" constant="-20" id="cu4-mO-SEe"/>
+                            <constraint firstItem="IjB-al-owz" firstAttribute="top" secondItem="piS-f1-tUb" secondAttribute="bottom" id="il4-oo-Dgq"/>
+                            <constraint firstItem="piS-f1-tUb" firstAttribute="leading" secondItem="XHu-pn-OWB" secondAttribute="leadingMargin" constant="-20" id="pos-FH-EEP"/>
+                            <constraint firstItem="IjB-al-owz" firstAttribute="leading" secondItem="XHu-pn-OWB" secondAttribute="leadingMargin" constant="-20" id="uhq-mG-GTS"/>
+                            <constraint firstItem="piS-f1-tUb" firstAttribute="top" secondItem="7mS-4n-6WZ" secondAttribute="bottom" id="xg6-nU-zRc"/>
+                        </constraints>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
