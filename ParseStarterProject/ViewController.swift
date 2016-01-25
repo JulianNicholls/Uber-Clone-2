@@ -61,7 +61,10 @@ class ViewController: UIViewController {
         if checkEntries() {
             displaySpinner()
 
-            PFUser.logInWithUsernameInBackground(username.texty, password: password.text, block: { (user, error) -> Void in
+            PFUser.logInWithUsernameInBackground(username.text!, password: password.text!, block: { (user, error) -> Void in
+
+                self.indicator.stopAnimating()
+                UIApplication.sharedApplication().endIgnoringInteractionEvents()
 
                 if error == nil {
                     // Nothing for now
