@@ -16,27 +16,35 @@ class RiderViewController: UIViewController, MKMapViewDelegate, CLLocationManage
     @IBOutlet weak var callButton: UIButton!
 
     var locationManager = CLLocationManager()
-    var location = CLLocationCoordinate2D()
+    var location        = CLLocationCoordinate2D()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
 
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
+
+        setCallButton()
     }
 
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let user : CLLocation = locations[0]
 
         location = CLLocationCoordinate2DMake(user.coordinate.latitude, user.coordinate.longitude)
-        let span = MKCoordinateSpanMake(0.005, 0.005)
+        let span = MKCoordinateSpanMake(0.003, 0.003)
         let region = MKCoordinateRegionMake(location, span)
 
         self.map.setRegion(region, animated: true)
+
+        let ann = MKPointAnnotation()
+
+        ann.coordinate = location
+        ann.title = "You are here!"
+
+        map.removeAnnotations(map.annotations)
+         map.addAnnotation(ann)
     }
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -49,27 +57,72 @@ class RiderViewController: UIViewController, MKMapViewDelegate, CLLocationManage
     }
     
     @IBAction func callPressed(sender: AnyObject) {
-        let call = PFObject(className: "RideRequest")
+        if callButton.titleLabel == "Cancel SchnellWagen" {
+            let query = PFQuery(className: "RideRequest")
 
-        call["riderId"]  = PFUser.currentUser()?.objectId
-        call["location"] = PFGeoPoint(latitude: location.latitude, longitude: location.longitude)
+            query.whereKey("riderId", equalTo: (PFUser.currentUser()?.objectId)!)
 
-        call.saveInBackgroundWithBlock { (success, error) -> Void in
-            if error == nil {
-                self.displayAlert("Your ride request has been made", title: "Schnell")
-            }
-            else {
-                var errorMsg = "Please try again shortly"
+            query.findObjectsInBackgroundWithBlock({
+                (objects, error) -> Void in
 
-                if let errorStr = error?.userInfo["error"] as? String {
-                    errorMsg = errorStr
+                if error != nil {
+                    var errorMsg = "Please try again shortly"
+
+                    if let errorStr = error?.userInfo["error"] as? String {
+                        errorMsg = errorStr
+                    }
+
+                    self.displayAlert(errorMsg, title: "There was a problem cancelling your ride")
                 }
+                else {
+                    let objects = objects as [PFObject]!
 
-                self.displayAlert(errorMsg, title: "There was a problem")
+                    for object in objects! {
+                        object.deleteInBackground()
+                    }
+                }
+            })
+        }
+        else {
+            let call = PFObject(className: "RideRequest")
+
+            call["riderId"]  = PFUser.currentUser()?.objectId
+            call["location"] = PFGeoPoint(latitude: location.latitude, longitude: location.longitude)
+
+            call.saveInBackgroundWithBlock { (success, error) -> Void in
+                if error == nil {
+                    self.setCallButton()
+                    self.displayAlert("Your ride request has been made", title: "Schnell")
+                }
+                else {
+                    var errorMsg = "Please try again shortly"
+
+                    if let errorStr = error?.userInfo["error"] as? String {
+                        errorMsg = errorStr
+                    }
+
+                    self.displayAlert(errorMsg, title: "There was a problem")
+                }
             }
         }
     }
 
+    func setCallButton() {
+        let query = PFQuery(className: "RideRequest")
+
+        query.whereKey("riderId", equalTo: (PFUser.currentUser()?.objectId)!)
+
+        query.findObjectsInBackgroundWithBlock {
+            (_objects, error) -> Void in
+
+            if error != nil {
+                self.callButton.setTitle("Call a SchnellWagen", forState: .Normal)
+            }
+            else {
+                self.callButton.setTitle("Cancel SchnellWagen", forState: .Normal)
+            }
+        }
+    }
 
     func displayAlert(message: String, title: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
