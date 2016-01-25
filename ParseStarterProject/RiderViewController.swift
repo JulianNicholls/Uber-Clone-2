@@ -8,6 +8,7 @@
 
 import UIKit
 import MapKit
+import Parse
 
 class RiderViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
 
@@ -15,6 +16,7 @@ class RiderViewController: UIViewController, MKMapViewDelegate, CLLocationManage
     @IBOutlet weak var callButton: UIButton!
 
     var locationManager = CLLocationManager()
+    var location : CLLocationCoordinate2D = CLLocationCoordinate2D()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,7 +32,7 @@ class RiderViewController: UIViewController, MKMapViewDelegate, CLLocationManage
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let user : CLLocation = locations[0]
 
-        let location = CLLocationCoordinate2DMake(user.coordinate.latitude, user.coordinate.longitude)
+        location = CLLocationCoordinate2DMake(user.coordinate.latitude, user.coordinate.longitude)
         let span = MKCoordinateSpanMake(0.005, 0.005)
         let region = MKCoordinateRegionMake(location, span)
 
@@ -38,23 +40,42 @@ class RiderViewController: UIViewController, MKMapViewDelegate, CLLocationManage
     }
     
     @IBAction func callPressed(sender: AnyObject) {
+        let call = PFObject(className: "RideRequest")
 
+        call["riderId"]  = PFUser.currentUser()?.objectId
+        call["location"] = PFGeoPoint(latitude: location.latitude, longitude: location.longitude)
+
+        call.saveInBackgroundWithBlock { (success, error) -> Void in
+            if error == nil {
+                self.displayAlert("Your ride request has been made", title: "Schnell")
+            }
+            else {
+                var errorMsg = "Please try again shortly"
+
+                if let errorStr = error?.userInfo["error"] as? String {
+                    errorMsg = errorStr
+                }
+
+                self.displayAlert(errorMsg, title: "There was a problem")
+            }
+        }
     }
+
+
+    func displayAlert(message: String, title: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+
+        alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: { (action) -> Void in
+            self.dismissViewControllerAnimated(true, completion: nil)
+        }))
+
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
+    
 
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 }

@@ -108,12 +108,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
         }
     }
 
-    override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool {
-//        print("OK for segue: \(PFUser.currentUser()?.objectId)")
-
-        return PFUser.currentUser()?.objectId != nil
-    }
-
     func checkEntries() -> Bool {
         if username.text == "" || password.text == "" {
             displayAlert("You must enter both a username and password", title: "There was a problem")
