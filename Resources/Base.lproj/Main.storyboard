@@ -23,7 +23,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="67" id="vaf-g8-8dv"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Georgia" family="Georgia" pointSize="57"/>
+                                <fontDescription key="fontDescription" name="Georgia-Bold" family="Georgia" pointSize="57"/>
                                 <color key="textColor" red="0.048484349699999998" green="0.16099274869999999" blue="0.64541903410000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -36,8 +36,8 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Kil-Ts-FPD">
-                                <rect key="frame" x="59" y="133" width="203" height="30"/>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Kil-Ts-FPD">
+                                <rect key="frame" x="59" y="134" width="203" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="Fof-Ow-Dbk"/>
                                     <constraint firstAttribute="width" constant="203" id="mVu-Wk-ZPC"/>
@@ -70,6 +70,9 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <state key="normal" title="Sign up"/>
+                                <connections>
+                                    <action selector="signupPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="kPB-oK-wXS"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sLO-I6-8uk">
                                 <rect key="frame" x="216" y="248" width="46" height="30"/>
@@ -78,6 +81,9 @@
                                     <constraint firstAttribute="height" constant="30" id="qXg-Et-3k7"/>
                                 </constraints>
                                 <state key="normal" title="Log in"/>
+                                <connections>
+                                    <action selector="loginPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="zO5-Zg-7qx"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Already registered?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="obj-cV-HC8">
                                 <rect key="frame" x="59" y="253" width="149" height="21"/>
@@ -112,6 +118,11 @@
                         </constraints>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                    <connections>
+                        <outlet property="driverToggle" destination="Ilp-nv-XWd" id="00H-zN-2bP"/>
+                        <outlet property="password" destination="Kil-Ts-FPD" id="sei-C8-zpr"/>
+                        <outlet property="username" destination="y7h-o9-Mzg" id="S0R-XM-zoY"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
