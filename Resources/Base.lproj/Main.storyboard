@@ -198,10 +198,10 @@
             </objects>
             <point key="canvasLocation" x="529" y="305"/>
         </scene>
-        <!--Root View Controller-->
+        <!--Driver View Controller-->
         <scene sceneID="WCw-5B-mfm">
             <objects>
-                <tableViewController id="JEo-3w-Kmk" sceneMemberID="viewController">
+                <tableViewController title="Driver View Controller" id="JEo-3w-Kmk" customClass="DriverViewController" customModule="Schnell" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="bH8-qL-Hbb">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -221,7 +221,15 @@
                             <outlet property="delegate" destination="JEo-3w-Kmk" id="Hly-ms-t8r"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="vZw-Um-cA5"/>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" title="Ride Requests" id="Hlc-66-21s">
+                        <barButtonItem key="leftBarButtonItem" title="Log out" id="sAB-XW-QAV">
+                            <connections>
+                                <segue destination="BYZ-38-t0r" kind="show" identifier="logoutDriver" id="eFS-N0-6yY"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0dr-6v-H4g" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -246,4 +254,7 @@
             <point key="canvasLocation" x="905" y="305"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="eFS-N0-6yY"/>
+    </inferredMetricsTieBreakers>
 </document>
