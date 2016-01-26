@@ -18,6 +18,8 @@ class RiderViewController: UIViewController, MKMapViewDelegate, CLLocationManage
     var locationManager = CLLocationManager()
     var location        = CLLocationCoordinate2D()
 
+    var requestsPresent = 0
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -26,7 +28,7 @@ class RiderViewController: UIViewController, MKMapViewDelegate, CLLocationManage
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
 
-        setCallButton()
+        setCallState()
     }
 
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -57,31 +59,8 @@ class RiderViewController: UIViewController, MKMapViewDelegate, CLLocationManage
     }
     
     @IBAction func callPressed(sender: AnyObject) {
-        if callButton.titleLabel == "Cancel SchnellWagen" {
-            let query = PFQuery(className: "RideRequest")
-
-            query.whereKey("username", equalTo: (PFUser.currentUser()?.username)!)
-
-            query.findObjectsInBackgroundWithBlock({
-                (objects, error) -> Void in
-
-                if error != nil {
-                    var errorMsg = "Please try again shortly"
-
-                    if let errorStr = error?.userInfo["error"] as? String {
-                        errorMsg = errorStr
-                    }
-
-                    self.displayAlert(errorMsg, title: "There was a problem cancelling your ride request")
-                }
-                else {
-                    let objects = objects as [PFObject]!
-
-                    for object in objects! {
-                        object.deleteInBackground()
-                    }
-                }
-            })
+        if requestsPresent > 0 {
+            cancelCall()
         }
         else {
             let call = PFObject(className: "RideRequest")
@@ -91,7 +70,7 @@ class RiderViewController: UIViewController, MKMapViewDelegate, CLLocationManage
 
             call.saveInBackgroundWithBlock { (success, error) -> Void in
                 if error == nil {
-                    self.setCallButton()
+                    self.setCallState()
                     self.displayAlert("Your ride request has been made", title: "Schnell")
                 }
                 else {
@@ -107,7 +86,7 @@ class RiderViewController: UIViewController, MKMapViewDelegate, CLLocationManage
         }
     }
 
-    func setCallButton() {
+    func setCallState() {
         let query = PFQuery(className: "RideRequest")
 
         query.whereKey("username", equalTo: (PFUser.currentUser()?.username)!)
@@ -116,7 +95,9 @@ class RiderViewController: UIViewController, MKMapViewDelegate, CLLocationManage
             (objects, error) -> Void in
 
             if error == nil {
-                if objects?.count == 0 {
+                self.requestsPresent = (objects?.count)!
+
+                if self.requestsPresent == 0 {
                     self.callButton.setTitle("Call a SchnellWagen", forState: .Normal)
                 }
                 else {
@@ -127,6 +108,35 @@ class RiderViewController: UIViewController, MKMapViewDelegate, CLLocationManage
                 print(error?.localizedDescription)
             }
         }
+    }
+
+    func cancelCall() {
+        let query = PFQuery(className: "RideRequest")
+
+        query.whereKey("username", equalTo: (PFUser.currentUser()?.username)!)
+
+        query.findObjectsInBackgroundWithBlock({
+            (objects, error) -> Void in
+
+            if error != nil {
+                var errorMsg = "Please try again shortly"
+
+                if let errorStr = error?.userInfo["error"] as? String {
+                    errorMsg = errorStr
+                }
+
+                self.displayAlert(errorMsg, title: "There was a problem cancelling your ride request")
+            }
+            else {
+                let objects = objects as [PFObject]!
+
+                for object in objects! {
+                    object.deleteInBackground()
+                }
+
+                self.setCallState()
+            }
+        })
     }
 
     func displayAlert(message: String, title: String) {
