@@ -60,7 +60,7 @@ class RiderViewController: UIViewController, MKMapViewDelegate, CLLocationManage
         if callButton.titleLabel == "Cancel SchnellWagen" {
             let query = PFQuery(className: "RideRequest")
 
-            query.whereKey("riderId", equalTo: (PFUser.currentUser()?.objectId)!)
+            query.whereKey("username", equalTo: (PFUser.currentUser()?.username)!)
 
             query.findObjectsInBackgroundWithBlock({
                 (objects, error) -> Void in
@@ -72,7 +72,7 @@ class RiderViewController: UIViewController, MKMapViewDelegate, CLLocationManage
                         errorMsg = errorStr
                     }
 
-                    self.displayAlert(errorMsg, title: "There was a problem cancelling your ride")
+                    self.displayAlert(errorMsg, title: "There was a problem cancelling your ride request")
                 }
                 else {
                     let objects = objects as [PFObject]!
@@ -86,7 +86,7 @@ class RiderViewController: UIViewController, MKMapViewDelegate, CLLocationManage
         else {
             let call = PFObject(className: "RideRequest")
 
-            call["riderId"]  = PFUser.currentUser()?.objectId
+            call["username"] = PFUser.currentUser()?.username
             call["location"] = PFGeoPoint(latitude: location.latitude, longitude: location.longitude)
 
             call.saveInBackgroundWithBlock { (success, error) -> Void in
@@ -110,16 +110,21 @@ class RiderViewController: UIViewController, MKMapViewDelegate, CLLocationManage
     func setCallButton() {
         let query = PFQuery(className: "RideRequest")
 
-        query.whereKey("riderId", equalTo: (PFUser.currentUser()?.objectId)!)
+        query.whereKey("username", equalTo: (PFUser.currentUser()?.username)!)
 
         query.findObjectsInBackgroundWithBlock {
-            (_objects, error) -> Void in
+            (objects, error) -> Void in
 
-            if error != nil {
-                self.callButton.setTitle("Call a SchnellWagen", forState: .Normal)
+            if error == nil {
+                if objects?.count == 0 {
+                    self.callButton.setTitle("Call a SchnellWagen", forState: .Normal)
+                }
+                else {
+                    self.callButton.setTitle("Cancel SchnellWagen", forState: .Normal)
+                }
             }
             else {
-                self.callButton.setTitle("Cancel SchnellWagen", forState: .Normal)
+                print(error?.localizedDescription)
             }
         }
     }
