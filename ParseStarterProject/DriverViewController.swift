@@ -9,10 +9,15 @@
 import UIKit
 import Parse
 
-class DriverViewController: UITableViewController {
+class DriverViewController: UITableViewController, CLLocationManagerDelegate {
+
+    var usernames    = [String]()
+    var locations   = [CLLocationCoordinate2D]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        loadRequests()
     }
 
     // MARK: - Table view data source
@@ -23,13 +28,13 @@ class DriverViewController: UITableViewController {
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 3
+        return usernames.count
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("requestCell", forIndexPath: indexPath)
 
-        cell.textLabel!.text = "Test \(indexPath.row + 1)"
+        cell.textLabel!.text = usernames[indexPath.row]
 
         return cell
     }
@@ -44,6 +49,43 @@ class DriverViewController: UITableViewController {
         }
     }
 
+    func loadRequests() {
+        PFGeoPoint.geoPointForCurrentLocationInBackground {
+            (driverlocation, error) -> Void in
+
+            if error == nil {
+                self.usernames.removeAll(keepCapacity: true)
+                self.locations.removeAll(keepCapacity: true)
+
+                let reqQuery = PFQuery(className: "RideRequest")
+
+                reqQuery.whereKey("location", nearGeoPoint: driverlocation!)
+
+                reqQuery.findObjectsInBackgroundWithBlock {
+                    (objects, error) -> Void in
+
+                    if error == nil {
+                        if let objects = objects as [PFObject]! {
+                            for request in objects {
+                                if let username = request["username"] as? String {
+                                    self.usernames.append(username)
+                                }
+
+                                if let loc = request["location"] as? PFGeoPoint {
+                                    let cloc = CLLocationCoordinate2DMake(loc.latitude, loc.longitude)
+
+                                    self.locations.append(cloc)
+                                }
+                            }
+                        }
+
+                        self.tableView.reloadData()
+                    }
+                }
+            }
+        }
+    }
+    
 
 
 
