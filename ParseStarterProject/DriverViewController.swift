@@ -11,13 +11,18 @@ import Parse
 
 class DriverViewController: UITableViewController, CLLocationManagerDelegate {
 
-    var usernames    = [String]()
+    var usernames   = [String]()
     var locations   = [CLLocationCoordinate2D]()
+    var distances   = [CLLocationDistance]()
+
+    var driverLocation = CLLocationCoordinate2D()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         loadRequests()
+
+        NSTimer.scheduledTimerWithTimeInterval(10, target: self, selector: Selector("loadRequests"), userInfo: nil, repeats: true)
     }
 
     // MARK: - Table view data source
@@ -28,15 +33,29 @@ class DriverViewController: UITableViewController, CLLocationManagerDelegate {
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return usernames.count
+        return locations.count
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("requestCell", forIndexPath: indexPath)
 
-        cell.textLabel!.text = usernames[indexPath.row]
+        let loc     = locations[indexPath.row]
+        let place   = String(format: "%.2f %.2f", arguments: [Double(loc.latitude), Double(loc.longitude)])
+        let distance = renderDistance(distances[indexPath.row])
+
+        cell.textLabel!.text = "\(usernames[indexPath.row]) \(distance) (\(place))"
 
         return cell
+    }
+
+    func renderDistance(dist: CLLocationDistance) -> String {
+        let d = Double(dist)
+
+        if d < 1200.0 {
+            return String(format: "%.0fm", arguments: [d])
+        }
+
+        return String(format: "%.1fKm", arguments: [d / 1000.0])
     }
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -51,15 +70,19 @@ class DriverViewController: UITableViewController, CLLocationManagerDelegate {
 
     func loadRequests() {
         PFGeoPoint.geoPointForCurrentLocationInBackground {
-            (driverlocation, error) -> Void in
+            (dloc, error) -> Void in
 
             if error == nil {
+                self.driverLocation = CLLocationCoordinate2DMake((dloc?.latitude)!, (dloc?.longitude)!)
+
                 self.usernames.removeAll(keepCapacity: true)
                 self.locations.removeAll(keepCapacity: true)
+                self.distances.removeAll(keepCapacity: true)
 
                 let reqQuery = PFQuery(className: "RideRequest")
 
-                reqQuery.whereKey("location", nearGeoPoint: driverlocation!)
+                reqQuery.whereKey("location", nearGeoPoint: dloc!)
+                reqQuery.limit = 10
 
                 reqQuery.findObjectsInBackgroundWithBlock {
                     (objects, error) -> Void in
@@ -75,6 +98,11 @@ class DriverViewController: UITableViewController, CLLocationManagerDelegate {
                                     let cloc = CLLocationCoordinate2DMake(loc.latitude, loc.longitude)
 
                                     self.locations.append(cloc)
+
+                                    let reqLoc = CLLocation(latitude: cloc.latitude, longitude: cloc.longitude)
+                                    let drvLoc = CLLocation(latitude: (dloc?.latitude)!, longitude: (dloc?.longitude)!)
+
+                                    self.distances.append(drvLoc.distanceFromLocation(reqLoc))
                                 }
                             }
                         }
