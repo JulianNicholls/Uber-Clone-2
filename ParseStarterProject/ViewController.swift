@@ -95,8 +95,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
     func performRelevantSegue() {
         if let isDriver = PFUser.currentUser()!["isDriver"] as? Bool {
             if isDriver {
-                // Nothing for now
-                print("Driver logged in")
+//                print("Driver logged in")
+                performSegueWithIdentifier("loginDriver", sender: self)
             }
             else {
 //                print("Rider logged in")
