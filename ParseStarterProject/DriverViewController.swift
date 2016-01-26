@@ -40,12 +40,32 @@ class DriverViewController: UITableViewController, CLLocationManagerDelegate {
         let cell = tableView.dequeueReusableCellWithIdentifier("requestCell", forIndexPath: indexPath)
 
         let loc     = locations[indexPath.row]
-        let place   = String(format: "%.2f %.2f", arguments: [Double(loc.latitude), Double(loc.longitude)])
+//        let place   = String(format: "%.2f %.2f", arguments: [Double(loc.latitude), Double(loc.longitude)])
         let distance = renderDistance(distances[indexPath.row])
 
-        cell.textLabel!.text = "\(usernames[indexPath.row]) \(distance) (\(place))"
+        cell.textLabel!.text = "\(usernames[indexPath.row]) \(distance)"    //  (\(place))
 
         return cell
+    }
+
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "logoutDriver" {
+            PFUser.logOut()
+            navigationController?.setNavigationBarHidden(navigationController?.navigationBarHidden == false, animated: false)
+        }
+        else {
+            if segue.identifier == "showRequest" {
+                // Set up data
+
+                if let destCtrl = segue.destinationViewController as? RequestViewController {
+                    destCtrl.reqLocation = locations[tableView.indexPathForSelectedRow!.row]
+                    destCtrl.reqRider = usernames[tableView.indexPathForSelectedRow!.row]
+                }
+            }
+            else {
+                print("Asked for odd segue")
+            }
+        }
     }
 
     func renderDistance(dist: CLLocationDistance) -> String {
@@ -57,17 +77,7 @@ class DriverViewController: UITableViewController, CLLocationManagerDelegate {
 
         return String(format: "%.1fKm", arguments: [d / 1000.0])
     }
-
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "logoutDriver" {
-            PFUser.logOut()
-            navigationController?.setNavigationBarHidden(navigationController?.navigationBarHidden == false, animated: false)
-        }
-        else {
-            print("Asked for odd segue")
-        }
-    }
-
+    
     func loadRequests() {
         PFGeoPoint.geoPointForCurrentLocationInBackground {
             (dloc, error) -> Void in

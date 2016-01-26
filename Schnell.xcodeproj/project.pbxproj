@@ -19,6 +19,7 @@
 		81BA817F1A49E0F000E65899 /* libstdc++.6.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 81BA817E1A49E0F000E65899 /* libstdc++.6.dylib */; };
 		B924AA8F1C56442200D5F5B8 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B924AA8E1C56442200D5F5B8 /* CoreLocation.framework */; };
 		B924AA911C56445C00D5F5B8 /* RiderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B924AA901C56445C00D5F5B8 /* RiderViewController.swift */; };
+		B92780871C57CC3600DB6F02 /* RequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B92780861C57CC3600DB6F02 /* RequestViewController.swift */; };
 		B9B083141C578F1E003B5F39 /* DriverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B083131C578F1E003B5F39 /* DriverViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -39,6 +40,7 @@
 		81BA81801A49E10C00E65899 /* ParseUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseUI.framework; sourceTree = "<group>"; };
 		B924AA8E1C56442200D5F5B8 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		B924AA901C56445C00D5F5B8 /* RiderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RiderViewController.swift; sourceTree = "<group>"; };
+		B92780861C57CC3600DB6F02 /* RequestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestViewController.swift; sourceTree = "<group>"; };
 		B9B083131C578F1E003B5F39 /* DriverViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DriverViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -93,6 +95,7 @@
 				81BA814A1A49DA1800E65899 /* AppDelegate.swift */,
 				81BA814C1A49DA1800E65899 /* ViewController.swift */,
 				814C3AC61B69877600E307BB /* Main.storyboard */,
+				B92780861C57CC3600DB6F02 /* RequestViewController.swift */,
 				B9B083131C578F1E003B5F39 /* DriverViewController.swift */,
 				B924AA901C56445C00D5F5B8 /* RiderViewController.swift */,
 			);
@@ -195,6 +198,7 @@
 			files = (
 				B9B083141C578F1E003B5F39 /* DriverViewController.swift in Sources */,
 				81BA814D1A49DA1800E65899 /* ViewController.swift in Sources */,
+				B92780871C57CC3600DB6F02 /* RequestViewController.swift in Sources */,
 				B924AA911C56445C00D5F5B8 /* RiderViewController.swift in Sources */,
 				81BA814B1A49DA1800E65899 /* AppDelegate.swift in Sources */,
 			);
