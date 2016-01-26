@@ -18,7 +18,6 @@ class DriverViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
@@ -38,6 +37,7 @@ class DriverViewController: UITableViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "logoutDriver" {
             PFUser.logOut()
+            navigationController?.setNavigationBarHidden(navigationController?.navigationBarHidden == false, animated: false)
         }
         else {
             print("Asked for odd segue")
