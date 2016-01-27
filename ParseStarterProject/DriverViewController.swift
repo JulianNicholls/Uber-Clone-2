@@ -39,7 +39,7 @@ class DriverViewController: UITableViewController, CLLocationManagerDelegate {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("requestCell", forIndexPath: indexPath)
 
-        let loc     = locations[indexPath.row]
+//        let loc     = locations[indexPath.row]
 //        let place   = String(format: "%.2f %.2f", arguments: [Double(loc.latitude), Double(loc.longitude)])
         let distance = renderDistance(distances[indexPath.row])
 
@@ -71,11 +71,14 @@ class DriverViewController: UITableViewController, CLLocationManagerDelegate {
     func renderDistance(dist: CLLocationDistance) -> String {
         let d = Double(dist)
 
-        if d < 1200.0 {
-            return String(format: "%.0fm", arguments: [d])
+        if d < 600.0 {
+            return String(format: "%.0f m", arguments: [d])
+        }
+        else if d < 20000.0 {
+            return String(format: "%.1f km", arguments: [d / 1000.0])
         }
 
-        return String(format: "%.1fKm", arguments: [d / 1000.0])
+        return String(format: "%.0f km", arguments: [d / 1000.0])
     }
     
     func loadRequests() {
@@ -100,24 +103,29 @@ class DriverViewController: UITableViewController, CLLocationManagerDelegate {
                     if error == nil {
                         if let objects = objects as [PFObject]! {
                             for request in objects {
-                                if let username = request["username"] as? String {
-                                    self.usernames.append(username)
-                                }
+                                if request["driverResponded"] == nil {
+                                    if let username = request["username"] as? String {
+                                        self.usernames.append(username)
+                                    }
 
-                                if let loc = request["location"] as? PFGeoPoint {
-                                    let cloc = CLLocationCoordinate2DMake(loc.latitude, loc.longitude)
+                                    if let loc = request["location"] as? PFGeoPoint {
+                                        let cloc = CLLocationCoordinate2DMake(loc.latitude, loc.longitude)
 
-                                    self.locations.append(cloc)
+                                        self.locations.append(cloc)
 
-                                    let reqLoc = CLLocation(latitude: cloc.latitude, longitude: cloc.longitude)
-                                    let drvLoc = CLLocation(latitude: (dloc?.latitude)!, longitude: (dloc?.longitude)!)
+                                        let reqLoc = CLLocation(latitude: cloc.latitude, longitude: cloc.longitude)
+                                        let drvLoc = CLLocation(latitude: (dloc?.latitude)!, longitude: (dloc?.longitude)!)
 
-                                    self.distances.append(drvLoc.distanceFromLocation(reqLoc))
+                                        self.distances.append(drvLoc.distanceFromLocation(reqLoc))
+                                    }
                                 }
                             }
                         }
 
                         self.tableView.reloadData()
+                    }
+                    else {
+                        print(error?.localizedDescription)
                     }
                 }
             }
