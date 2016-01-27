@@ -8,6 +8,7 @@
 
 import UIKit
 import MapKit
+import Parse
 
 class RequestViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
 
@@ -21,15 +22,59 @@ class RequestViewController: UIViewController, MKMapViewDelegate, CLLocationMana
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.requestAlwaysAuthorization()
-//        locationManager.startUpdatingLocation()
-
         setMapCentre()
     }
 
     @IBAction func riderPressed(sender: AnyObject) {
+        let query = PFQuery(className: "RideRequest")
+
+        query.whereKey("username", equalTo: reqRider)
+
+        query.findObjectsInBackgroundWithBlock({
+            (objects, error) -> Void in
+
+            if error == nil {
+                let objects = objects as [PFObject]!
+
+                for object in objects {
+                    object["driverResponded"] = PFUser.currentUser()?.username
+                    object.saveInBackground()
+                }
+
+                let reqCLLoc = CLLocation(latitude: self.reqLocation.latitude, longitude: self.reqLocation.longitude)
+
+                CLGeocoder().reverseGeocodeLocation(reqCLLoc, completionHandler: {
+                    (places, error) -> Void in
+
+                    if error == nil {
+                        if places!.count > 0 {
+                            if let dest = places![0] as? CLPlacemark {
+                                let mkpDest = MKPlacemark(placemark: dest)
+                                let mapItem = MKMapItem(placemark: mkpDest)
+
+                                mapItem.name = self.reqRider
+
+                                let launchOptions = [MKLaunchOptionsDirectionsModeKey : MKLaunchOptionsDirectionsModeDriving]
+
+                                mapItem.openInMapsWithLaunchOptions(launchOptions)
+                            }
+                            else {
+                                print("Cannot downcast")
+                            }
+                        }
+                        else {
+                            print("No placemarks returned")
+                        }
+                    }
+                    else {
+                        print(error?.localizedDescription)
+                    }
+                })
+            }
+            else {
+                print(error?.localizedDescription)
+            }
+        })
     }
 
     /*
@@ -47,6 +92,11 @@ class RequestViewController: UIViewController, MKMapViewDelegate, CLLocationMana
         let region  = MKCoordinateRegionMake(reqLocation, span)
 
         self.map.setRegion(region, animated: true)
+
+        let ann = MKPointAnnotation()
+        ann.coordinate = reqLocation
+        ann.title = "'\(reqRider) Location"
+        self.map.addAnnotation(ann)
     }
 
 
