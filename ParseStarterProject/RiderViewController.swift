@@ -68,6 +68,14 @@ class RiderViewController: UIViewController, MKMapViewDelegate, CLLocationManage
             call["username"] = PFUser.currentUser()?.username
             call["location"] = PFGeoPoint(latitude: location.latitude, longitude: location.longitude)
 
+            // In a real app, you'd make a role that covered rider and driver and set
+            // read and write access to them exclusively
+            let acl = PFACL()
+            acl.publicReadAccess = true
+            acl.publicWriteAccess = true
+
+            call.ACL = acl
+                
             call.saveInBackgroundWithBlock { (success, error) -> Void in
                 if error == nil {
                     self.setCallState()
@@ -130,7 +138,7 @@ class RiderViewController: UIViewController, MKMapViewDelegate, CLLocationManage
             else {
                 let objects = objects as [PFObject]!
 
-                for object in objects! {
+                for object in objects {
                     object.deleteInBackground()
                 }
 
