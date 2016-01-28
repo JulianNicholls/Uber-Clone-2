@@ -87,8 +87,6 @@ class RequestViewController: UIViewController, MKMapViewDelegate, CLLocationMana
     func setMapCentre() {
         let spanDegrees = Double(reqDistance) < 5000.0 ? 0.01 : 0.02
 
-        print(spanDegrees)
-        
         let span    = MKCoordinateSpanMake(spanDegrees, spanDegrees)
         let region  = MKCoordinateRegionMake(reqLocation, span)
 

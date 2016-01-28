@@ -22,6 +22,14 @@
 	<string>1.12.0</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>to enable Schnell to keep you in mind</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>to enable Schnell to find you quickly</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>location</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>Main</string>
 	<key>UIMainStoryboardFile</key>
@@ -43,9 +51,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-    <key>NSLocationWhenInUseUsageDescription</key>
-    <string>to enable Schnell to find you quickly</string>
-    <key>NSLocationAlwaysUsageDescription</key>
-    <string>to enable Schnell to keep you in mind</string>
 </dict>
 </plist>
