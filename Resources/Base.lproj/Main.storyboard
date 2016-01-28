@@ -143,10 +143,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="IjB-al-owz">
-                                <rect key="frame" x="0.0" y="64" width="320" height="434"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="434" id="DTr-u0-DIr"/>
-                                </constraints>
+                                <rect key="frame" x="0.0" y="64" width="320" height="432"/>
                             </mapView>
                             <navigationBar contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="piS-f1-tUb">
                                 <rect key="frame" x="0.0" y="20" width="320" height="44"/>
@@ -163,11 +160,10 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pSG-fI-5Mz">
-                                <rect key="frame" x="60" y="518" width="201" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pSG-fI-5Mz">
+                                <rect key="frame" x="20" y="518" width="280" height="30"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="201" id="hWT-Vm-By5"/>
-                                    <constraint firstAttribute="height" constant="30" id="wPf-mz-luB"/>
+                                    <constraint firstAttribute="height" constant="30" id="dN9-TQ-kv0"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <state key="normal" title="Call a Schnellwagen"/>
@@ -178,11 +174,13 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="bzX-IO-DEo" firstAttribute="top" secondItem="pSG-fI-5Mz" secondAttribute="bottom" constant="20" id="9Qf-mt-27a"/>
-                            <constraint firstItem="pSG-fI-5Mz" firstAttribute="centerX" secondItem="XHu-pn-OWB" secondAttribute="centerX" id="DA2-Pf-ksb"/>
-                            <constraint firstItem="IjB-al-owz" firstAttribute="top" secondItem="piS-f1-tUb" secondAttribute="bottom" id="NED-F5-7rC"/>
-                            <constraint firstItem="IjB-al-owz" firstAttribute="leading" secondItem="XHu-pn-OWB" secondAttribute="leadingMargin" constant="-20" id="rJG-xw-5Mf"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="IjB-al-owz" secondAttribute="trailing" constant="-20" id="yzi-qd-knE"/>
+                            <constraint firstItem="pSG-fI-5Mz" firstAttribute="leading" secondItem="XHu-pn-OWB" secondAttribute="leadingMargin" id="FRq-Ga-FXg"/>
+                            <constraint firstItem="pSG-fI-5Mz" firstAttribute="trailing" secondItem="XHu-pn-OWB" secondAttribute="trailingMargin" id="Sro-fZ-1Kp"/>
+                            <constraint firstItem="bzX-IO-DEo" firstAttribute="top" secondItem="pSG-fI-5Mz" secondAttribute="bottom" constant="20" id="UV3-5h-fR6"/>
+                            <constraint firstItem="IjB-al-owz" firstAttribute="top" secondItem="piS-f1-tUb" secondAttribute="bottom" id="Z0u-eG-Ugc"/>
+                            <constraint firstItem="pSG-fI-5Mz" firstAttribute="top" secondItem="IjB-al-owz" secondAttribute="bottom" constant="22" id="ixu-mz-NmW"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="IjB-al-owz" secondAttribute="trailing" constant="-20" id="w74-8d-W29"/>
+                            <constraint firstItem="IjB-al-owz" firstAttribute="leading" secondItem="XHu-pn-OWB" secondAttribute="leadingMargin" constant="-20" id="zQG-vf-Xkr"/>
                         </constraints>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
