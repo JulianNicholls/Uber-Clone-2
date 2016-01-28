@@ -16,6 +16,7 @@ class RequestViewController: UIViewController, MKMapViewDelegate, CLLocationMana
 
     var reqLocation = CLLocationCoordinate2DMake(0, 0)
     var reqRider    = "(None)"
+    var reqDistance = CLLocationDistance()
 
     var locationManager = CLLocationManager()
 
@@ -48,19 +49,15 @@ class RequestViewController: UIViewController, MKMapViewDelegate, CLLocationMana
 
                     if error == nil {
                         if places!.count > 0 {
-                            if let dest = places![0] as? CLPlacemark {
-                                let mkpDest = MKPlacemark(placemark: dest)
-                                let mapItem = MKMapItem(placemark: mkpDest)
+                            let dest = places![0]
+                            let mkpDest = MKPlacemark(placemark: dest)
+                            let mapItem = MKMapItem(placemark: mkpDest)
 
-                                mapItem.name = self.reqRider
+                            mapItem.name = self.reqRider
 
-                                let launchOptions = [MKLaunchOptionsDirectionsModeKey : MKLaunchOptionsDirectionsModeDriving]
+                            let launchOptions = [MKLaunchOptionsDirectionsModeKey : MKLaunchOptionsDirectionsModeDriving]
 
-                                mapItem.openInMapsWithLaunchOptions(launchOptions)
-                            }
-                            else {
-                                print("Cannot downcast")
-                            }
+                            mapItem.openInMapsWithLaunchOptions(launchOptions)
                         }
                         else {
                             print("No placemarks returned")
@@ -88,7 +85,11 @@ class RequestViewController: UIViewController, MKMapViewDelegate, CLLocationMana
     */
 
     func setMapCentre() {
-        let span    = MKCoordinateSpanMake(0.01, 0.01)
+        let spanDegrees = Double(reqDistance) < 5000.0 ? 0.01 : 0.02
+
+        print(spanDegrees)
+        
+        let span    = MKCoordinateSpanMake(spanDegrees, spanDegrees)
         let region  = MKCoordinateRegionMake(reqLocation, span)
 
         self.map.setRegion(region, animated: true)

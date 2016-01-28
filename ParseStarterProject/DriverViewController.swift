@@ -58,8 +58,11 @@ class DriverViewController: UITableViewController, CLLocationManagerDelegate {
                 // Set up data
 
                 if let destCtrl = segue.destinationViewController as? RequestViewController {
-                    destCtrl.reqLocation = locations[tableView.indexPathForSelectedRow!.row]
-                    destCtrl.reqRider = usernames[tableView.indexPathForSelectedRow!.row]
+                    let row = tableView.indexPathForSelectedRow!.row
+                    
+                    destCtrl.reqLocation    = locations[row]
+                    destCtrl.reqRider       = usernames[row]
+                    destCtrl.reqDistance    = distances[row]
                 }
             }
             else {
